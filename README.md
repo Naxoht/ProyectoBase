@@ -1,5 +1,5 @@
 # ProyectoBase
--- Modificacion Oficina Victor
+-- Modificacion Oficina Victor --
 create or replace NONEDITIONABLE procedure modificacio_oficina(cod_oficce in office.code_office%TYPE,option_ in number,modificacion in number) 
 is
     comprobacion_cod number;
