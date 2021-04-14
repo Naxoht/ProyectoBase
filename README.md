@@ -55,3 +55,31 @@ begin
     
 end;
 /
+
+#=Trigger de Oficina
+create or replace NONEDITIONABLE TRIGGER disparador_oficina 
+before insert or update
+on office
+for each row 
+begin
+    if inserting then
+        if :new.city = null then
+            RAISE_APPLICATION_ERROR(-20000, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
+        end if;
+        if :new.office_objective<:new.office_sales then
+             RAISE_APPLICATION_ERROR(-20001, 'Els objectius de vendes de l’oficina no poden ser més petit que les vendes de l’oficina');
+        end if;
+    end if;
+
+    if updating then
+        if :new.city = '' then
+            RAISE_APPLICATION_ERROR(-20002, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
+        end if;
+        if :new.office_objective<:new.office_sales then
+             RAISE_APPLICATION_ERROR(-20003, 'Els objectius de vendes de l’oficina no poden ser més petit que les vendes de l’oficina');
+        end if;
+        if :new.OFFICE_DIRECTOR = null then
+            RAISE_APPLICATION_ERROR(-20004, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
+        end if;
+    end if;
+end;
