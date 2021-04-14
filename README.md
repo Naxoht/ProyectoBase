@@ -1,4 +1,4 @@
-#-- Modificaion Oficina --
+-- Modificaion Oficina --
 
 create or replace NONEDITIONABLE function modificacio_oficina(cod_oficce in office.code_office%TYPE) return boolean
 is
@@ -56,7 +56,7 @@ begin
 end;
 /
 
-#=Trigger de Oficina
+-- Trigger de Oficina --
 create or replace NONEDITIONABLE TRIGGER disparador_oficina 
 before insert or update
 on office
