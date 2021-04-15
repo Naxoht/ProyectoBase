@@ -6,16 +6,17 @@ is
     obj office.office_objective%TYPE;
     vent office.office_sales%TYPE;
     direct office.office_director%TYPE;
-    error_ exception;
+    error_contador exception;
+    error_opcion exception;
 begin
     --Primero comprobamos que exista en codigo
     select count(code_office) INTO comprobacion_cod from office where code_office = cod_oficce;
     if comprobacion_cod=0 then
-        raise error_;
+        raise error_contador;
 
     else
         if option_ <1 or option_>3 then
-            dbms_output.put_line('La opcion que has puesto no existe');
+            raise error_contador;
 
         else
             if option_ = 1 then
@@ -33,8 +34,10 @@ begin
 
     end if;
 exception 
-    when error_ then
+    when error_contador then
         dbms_output.put_line('El codigo que has puesto  no existe');
+    when error_opcion then
+        dbms_output.put_line('La opcion que has puesto no existe');
 end;
 --Trigger oficina--
 create or replace NONEDITIONABLE TRIGGER disparador_oficina 
@@ -62,6 +65,43 @@ begin
             RAISE_APPLICATION_ERROR(-20004, 'El codi del director de l’oficina ha de ser d’entrada obligatòria.');
         end if;
     end if;
+end;
+-- Modificacion comanda --
+
+create or replace NONEDITIONABLE procedure modificacio_comanda(comanda_id in order2.order_code%TYPE,option_ in number,modificacion in number) 
+is
+    comprobacion_cod number;
+    quant order2.quantity%TYPE;
+    total order2.total_amount%TYPE;
+    error_contador exception;
+    error_opcion exception;
+begin
+    --Primero comprobamos que exista en codigo
+    select count(*) INTO comprobacion_cod from order2 where order_code = comanda_id;
+    if comprobacion_cod=0 then
+        raise error_contador;
+
+    else
+        if option_ <1 or option_>2 then
+            raise error_contador;
+
+        else
+            if option_ = 1 then
+                quant := modificacion; 
+                update order2 set quantity = quant where order_code =  comanda_id;
+            elsif option_ = 2 then
+                total := modificacion; 
+                update order2 set total_amount = total where order_code =  comanda_id;
+            end if;
+
+        end if;
+
+    end if;
+exception 
+    when error_contador then
+        dbms_output.put_line('El codigo que has puesto  no existe');
+    when error_opcion then
+        dbms_output.put_line('La opcion que has puesto no existe');
 end;
 
 -- Trigger comanda --
