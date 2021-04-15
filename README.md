@@ -108,7 +108,7 @@ begin
         end if;
         --La quantitat mai pot ser més petit que la que ja existeix.
         if :new.QUANTITY<:old.QUANTITY then
-             RAISE_APPLICATION_ERROR(-20003, 'La quantitat no pot ser mes petita que la existent.');
+             RAISE_APPLICATION_ERROR(-20009, 'La quantitat no pot ser mes petita que la existent.');
         end if;
     end if;
     --La quantitat no pot ser negativa.
