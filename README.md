@@ -56,16 +56,14 @@ begin
     
 end;
 /
-
--- Trigger de Oficina --
-
+--Trigger oficina--
 create or replace NONEDITIONABLE TRIGGER disparador_oficina 
 before insert or update
 on office
 for each row 
 begin
     if inserting then
-        if :new.city = null then
+        if :new.city is null then
             RAISE_APPLICATION_ERROR(-20000, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
         end if;
         if :new.office_objective<:new.office_sales then
@@ -74,14 +72,14 @@ begin
     end if;
 
     if updating then
-        if :new.city = '' then
+        if :new.city is null then
             RAISE_APPLICATION_ERROR(-20002, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
         end if;
         if :new.office_objective<:new.office_sales then
              RAISE_APPLICATION_ERROR(-20003, 'Els objectius de vendes de l’oficina no poden ser més petit que les vendes de l’oficina');
         end if;
-        if :new.OFFICE_DIRECTOR = null then
-            RAISE_APPLICATION_ERROR(-20004, 'El nom de la ciutat de l’oficina ha de ser d’entrada obligatòria.');
+        if :new.OFFICE_DIRECTOR is null then
+            RAISE_APPLICATION_ERROR(-20004, 'El codi del director de l’oficina ha de ser d’entrada obligatòria.');
         end if;
     end if;
 end;
@@ -94,20 +92,20 @@ for each row
 begin
     if inserting then
         --El codi del client, del venedor i del producte han de ser d’entrada obligatòria.
-        if :new.CUSTOMER_CODE = null then
+        if :new.CUSTOMER_CODE is null then
             RAISE_APPLICATION_ERROR(-20000, 'El codi del client ha de ser d’entrada obligatòria.');
         end if;
-        if :new.SUPPLIER_CODE = null then
+        if :new.SUPPLIER_CODE is null then
             RAISE_APPLICATION_ERROR(-20001, 'El codi del vendedor ha de ser d’entrada obligatòria.');
         end if;
-        if :new.PRODUCT_CODE = null then
+        if :new.PRODUCT_CODE is null then
             RAISE_APPLICATION_ERROR(-20002, 'El codi del producte ha de ser d’entrada obligatòria.');
         end if;
         --En cas de no posar data de comanda, ha d’agafar la de sistema.
-        if :new.ORDER_DATE = null then
+        if :new.ORDER_DATE is null then
             :new.ORDER_DATE := sysdate;
         end if;
-        
+
     end if;
 
     if updating then
