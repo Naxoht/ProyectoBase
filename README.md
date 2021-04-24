@@ -16,7 +16,7 @@ begin
 
     else
         if option_ <1 or option_>3 then
-            raise error_contador;
+            raise error_opcion;
 
         else
             if option_ = 1 then
@@ -66,6 +66,7 @@ begin
         end if;
     end if;
 end;
+
 -- Modificacion comanda --
 
 create or replace NONEDITIONABLE procedure modificacio_comanda(comanda_id in order2.order_code%TYPE,option_ in number,modificacion in number) 
