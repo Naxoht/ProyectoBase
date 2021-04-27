@@ -6,7 +6,7 @@ create or replace package gestion_oficines is
     procedure modificacio_oficina(cod_oficce office.code_office%TYPE,option_ number,modificacion number);
     
     --Query
-    
+    PROCEDURE  consulta_oficina_codi (CODI OFFICE.CODE_OFFICE%TYPE);
     PROCEDURE CONSULTA_OFICINES;
     PROCEDURE CONSULTA_OFICINA_OBJECTIUS (OBJETIVO OFFICE.CODE_OFFICE%TYPE);
     PROCEDURE CONSULTA_OFICINES_CAP(DIRECTOR NUMBER);
@@ -118,7 +118,20 @@ create or replace package body gestion_oficines is
     end modificacio_oficina;
     
     --Consultas
+    --1--
+    PROCEDURE  consulta_oficina_codi (CODI OFFICE.CODE_OFFICE%TYPE)
+    AS
     
+    OFFI OFFICE%ROWTYPE;
+    
+    BEGIN
+    
+    SELECT * INTO OFFI FROM OFFICE O
+    WHERE CODI = O.CODE_OFFICE;
+    
+    DBMS_OUTPUT.PUT_LINE('CODIGO OFICINA: '||OFFI.CODE_OFFICE||' CIUDAD: '||OFFI.CITY||' PROVINCIA: '||OFFI.PROVINCE||' OBJETIVO OFFICINA: '||OFFI.OFFICE_OBJECTIVE||' VENTAS OFICINA: '||OFFI.OFFICE_SALES||' DIRECTOR: '||OFFI.OFFICE_DIRECTOR);
+    END consulta_oficina_codi;
+
     --2--
     
     PROCEDURE CONSULTA_OFICINES
