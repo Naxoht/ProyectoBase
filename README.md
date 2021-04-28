@@ -157,3 +157,19 @@ begin
              RAISE_APPLICATION_ERROR(-20003, 'La quantitat no pot ser negativa.');
     end if;
 end;
+
+-- Altres gestions --
+-- Modifiacion--
+
+create or replace procedure  APLICAR_STOCK_MIN is
+    cursor c is select * from product;
+    
+begin
+    for i in c loop
+        if i.stock < 5 then
+            update product set  prize = prize * 1.05 where product_code = i.product_code;
+            dbms_output.put_line('Updateado');
+        end if;
+    end loop;
+    
+end APLICAR_STOCK_MIN;
