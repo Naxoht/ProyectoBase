@@ -173,3 +173,29 @@ begin
     end loop;
     
 end APLICAR_STOCK_MIN;
+
+create or replace procedure  DESCOMPTAR_STOCK(id_prod product.product_code%TYPE, num_comprados number) is
+    contador number;
+    contador_ex exception;
+    num_ex exception;
+begin
+    select count(*) into contador from product where  product_code = id_prod;
+    if contador = 0 then
+        raise contador_ex;
+    else
+        if num_comprados<=0 then
+            raise num_ex;
+        else
+            update product set stock = stock - num_comprados where product_code = id_prod;
+        end if;
+    end if;
+
+exception
+    
+    when contador_ex then
+        dbms_output.put_line('No existe ese codigo de producto');
+    when num_ex then
+     dbms_output.put_line('No se pueden descontar 0 productos');
+        
+end DESCOMPTAR_STOCK;
+
