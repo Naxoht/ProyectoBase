@@ -174,28 +174,56 @@ begin
     
 end APLICAR_STOCK_MIN;
 
-create or replace procedure  DESCOMPTAR_STOCK(id_prod product.product_code%TYPE, num_comprados number) is
+create or replace procedure  DESCOMPTAR_STOCK(id_com order2.ORDER_CODE%TYPE) is
     contador number;
     contador_ex exception;
-    num_ex exception;
+    cod_prod product.PRODUCT_CODE%TYPE;
+    cantidad number;
+    
 begin
-    select count(*) into contador from product where  product_code = id_prod;
+    select count(*) into contador from order2 where  ORDER_CODE = id_com;
     if contador = 0 then
         raise contador_ex;
     else
-        if num_comprados<=0 then
-            raise num_ex;
-        else
-            update product set stock = stock - num_comprados where product_code = id_prod;
-        end if;
+        select o.QUANTITY, p.product_code into cantidad,cod_prod from order2 o 
+        inner join product p on p.product_code = o.product_code
+        where o.ORDER_CODE = id_com;
+        
+        update product set stock = stock - cantidad where product_code = cod_prod;
     end if;
 
 exception
     
     when contador_ex then
-        dbms_output.put_line('No existe ese codigo de producto');
-    when num_ex then
-     dbms_output.put_line('No se pueden descontar 0 productos');
+        dbms_output.put_line('No existe ese codigo de comanda que has puesto');
+    
         
 end DESCOMPTAR_STOCK;
+
+
+--Tractament històrics comandes
+
+create table COMANDA_HISTORIC(  
+    ORDER_CODE NUMBER(6,0) not null,
+    ORDER_DATE DATE not null,
+    CUSTOMER_CODE NUMBER(9,0),
+    SUPPLIER_CODE NUMBER(5,0),
+    PRODUCT_CODE VARCHAR2(8 BYTE),
+    QUANTITY NUMBER(4,0),
+    TOTAL_AMOUNT NUMBER(7,2),
+    ORDER_DROP VARCHAR2(1 BYTE)
+
+);
+
+create or replace procedure pasar_comanda is
+    cursor c is select * from  order2;
+    
+begin
+    for i in c loop
+        if i.ORDER_DROP = 'S' then
+            insert into COMANDA_HISTORIC values(i.ORDER_CODE,i.ORDER_DATE,i.CUSTOMER_CODE,i.SUPPLIER_CODE,i.PRODUCT_CODE,i.QUANTITY,i.TOTAL_AMOUNT,i.ORDER_DROP);
+            delete order2 where order_code=i.order_code;
+        end if;
+    end loop;
+end;
 
