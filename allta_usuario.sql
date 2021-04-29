@@ -21,7 +21,7 @@ if cont_us != 0 then
 end if;
 
 insert into users values(cod_usuari,usuari,nom,cognom,contrasenya);
-dbms_output.put_line('Usuari inserit correctament');
+dbms_output.put_line('Usuario donat de alta correctament');
 
 EXCEPTION    
     when usuario_existe_cod then
