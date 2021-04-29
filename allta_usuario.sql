@@ -29,8 +29,3 @@ EXCEPTION
     when usuario_existe then
         dbms_output.put_line('Ya existe este usuario');
 END;
-
-set serveroutput on
-BEGIN
-    alta_usuari('5NX','Naxoht','Nacho','Hidalgo','1234');
-END;
