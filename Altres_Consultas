@@ -45,7 +45,11 @@ for i in comanda loop
         quantitat := quantitat+i.total_amount;
     end if;
 end loop;
+    if quantitat <= 0 then
+        raise NO_HAY_IMPORTE;
+    end if;
 return quantitat;
+
 EXCEPTION
     WHEN NO_HAY_IMPORTE THEN
         DBMS_OUTPUT.PUT_LINE('NO HAY UN IMPORTE EN ESE RANGO!!!');
