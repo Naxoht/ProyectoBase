@@ -1,7 +1,7 @@
-/*Baixa comanda: donar de baixa la comanda que l’usuari desitgi, tenint en compte 
-si existeix o no. En cas d’existir s’ha d’anar en compte si està relacionat en una
-altra taula, i per tant, s’ha de donar el missatge corresponent de què no es pot esborrar.
-En aquest cas no s’esborrarà la comanda directament, sinó que es canviarà el camp
+/*Baixa comanda: donar de baixa la comanda que lâ€™usuari desitgi, tenint en compte 
+si existeix o no. En cas dâ€™existir sâ€™ha dâ€™anar en compte si estÃ  relacionat en una
+altra taula, i per tant, sâ€™ha de donar el missatge corresponent de quÃ¨ no es pot esborrar.
+En aquest cas no sâ€™esborrarÃ  la comanda directament, sinÃ³ que es canviarÃ  el camp
 comanda baixa de NO (N) per SI (S).*/
 
 create or replace procedure baixacomanda(ocomanda in order2.order_code%type)as
@@ -15,8 +15,8 @@ begin
         raise no_esta;
     else
         --No hay ninguna relacion de esta tabla con una fk
-        DELETE FROM order2 WHERE order_code = ocomanda;
-        DBMS_OUTPUT.PUT_LINE('Se ha borrado exitosamente los campos de la comanda ' || ocomanda);
+        update order2 set order_drop = 'S' WHERE order_code = ocomanda;
+        DBMS_OUTPUT.PUT_LINE('Se ha deshabilitado la comanda ' || ocomanda);
     end if;
 
 exception
@@ -29,5 +29,5 @@ end;
 --Quitar esto cuando se entregue el proyecto
 set serveroutput on;
 begin
-    baixacomanda(1);
+    baixacomanda(8);
 end;
