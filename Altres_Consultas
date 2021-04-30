@@ -8,14 +8,25 @@ create or replace function numero_comandes (data1 date, data2 date) return numbe
 quantitat number := 0;
 cursor datacomanda is
 select * from order2;
+
+no_hay_comandas exception;
+
 begin
 for i in datacomanda loop
     if i.order_date between data1 and data2 then
         quantitat := quantitat+1;
     end if;
 end loop;
+    if quantitat <= 0 then
+        raise no_hay_comandas;
+    end if;
 return quantitat;
+
+exception
+    when no_hay_comandas then
+        DBMS_OUTPUT.PUT_LINE('NO HAY COMANDAS EN EL RANGO ESPECIFICADO!!!');
 end;
+
 
 
 set serveroutput on;
