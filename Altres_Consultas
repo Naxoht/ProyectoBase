@@ -29,13 +29,16 @@ DBMS_OUTPUT.PUT_LINE(vuelta);
 end;
 
 
---UwU
+--2--
+--IMPORT TOTAL COMANDES--
 
 create or replace function import_total_comanda (data1 date, data2 date) return number as
 
 quantitat number := 0;
 cursor comanda is
 select * from order2;
+NO_HAY_IMPORTE EXCEPTION;
+
 begin
 for i in comanda loop
     if i.order_date between data1 and data2 then
@@ -43,17 +46,22 @@ for i in comanda loop
     end if;
 end loop;
 return quantitat;
+EXCEPTION
+    WHEN NO_HAY_IMPORTE THEN
+        DBMS_OUTPUT.PUT_LINE('NO HAY UN IMPORTE EN ESE RANGO!!!');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('ERROR, ALGO NO ANDA BIEN!!!');
 end;
 
 
 set serveroutput on;
 declare
-fecha1 date := &PrimeraFecha;
-fecha2 date := &SegundaFecha;
-vuelta number(30);
+    fecha1 date := &PrimeraFecha;
+    fecha2 date := &SegundaFecha;
+    vuelta number(30);
 begin
-vuelta := import_total_comanda(fecha1, fecha2);
-DBMS_OUTPUT.PUT_LINE(vuelta||'€');
+    vuelta := import_total_comanda(fecha1, fecha2);
+    DBMS_OUTPUT.PUT_LINE(vuelta||'€');
 end;
 
 
