@@ -1,3 +1,39 @@
+--1--
+/*Número comandes : s’ha de retornar quantes comandes han estat donades d’alta 
+a la base de dades entre una data i una altra. Els rangs de dates estaran 
+introduïts per teclat per part de l’usuari. Tractar tots els errors necessaris.*/
+
+create or replace function numero_comandes (data1 date, data2 date) return number as
+
+quantitat number := 0;
+cursor datacomanda is
+select * from order2;
+begin
+for i in datacomanda loop
+    if i.order_date between data1 and data2 then
+        quantitat := quantitat+1;
+    end if;
+end loop;
+return quantitat;
+end;
+
+
+set serveroutput on;
+declare
+fecha1 date := &PrimeraFecha;
+fecha2 date := &SegundaFecha;
+vuelta number(30);
+begin
+vuelta := numero_comandes(fecha1, fecha2);
+DBMS_OUTPUT.PUT_LINE(vuelta);
+end;
+
+
+--UwU
+
+
+
+
 --3--
 --NUMERO CLIENTS--
 CREATE OR REPLACE PROCEDURE NUMERO_CLIENTS
