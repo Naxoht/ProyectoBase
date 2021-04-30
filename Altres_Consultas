@@ -31,7 +31,30 @@ end;
 
 --UwU
 
+create or replace function import_total_comanda (data1 date, data2 date) return number as
 
+quantitat number := 0;
+cursor comanda is
+select * from order2;
+begin
+for i in comanda loop
+    if i.order_date between data1 and data2 then
+        quantitat := quantitat+i.total_amount;
+    end if;
+end loop;
+return quantitat;
+end;
+
+
+set serveroutput on;
+declare
+fecha1 date := &PrimeraFecha;
+fecha2 date := &SegundaFecha;
+vuelta number(30);
+begin
+vuelta := import_total_comanda(fecha1, fecha2);
+DBMS_OUTPUT.PUT_LINE(vuelta||'€');
+end;
 
 
 --3--
