@@ -18,16 +18,13 @@ create or replace package body gestionarComandes is
     --Alta
     procedure alta_comanda(cod_comanda number,fecha_comanda date,cod_cliente number,cod_vendedor number,cod_producto varchar2,cantidad number,salida_comanda varchar2)
     as
-    fecha_null exception;
     vendedor_no_existe exception;
     cod_existente exception;
     cliente_no_existe exception;
     producto_no_existe exception;
     
     cod_null exception;
-    
-    cantidad_invalida exception;
-    
+        
     cont_comanda number(8);
     cont_cliente number(8);
     cont_vendedor number(8);
@@ -52,10 +49,6 @@ create or replace package body gestionarComandes is
     inner join order2 on order2.supplier_code = supplier.supplier_code
     where supplier.supplier_code = cod_vendedor;
     
-    if fecha_comanda is null then
-        raise fecha_null;
-    end if;
-    
     if cont_vendedor = 0  then
         raise vendedor_no_existe;
     end if;
@@ -76,10 +69,6 @@ create or replace package body gestionarComandes is
         raise producto_no_existe;
     end if;
     
-    if cantidad < 1 then
-        raise cantidad_invalida;
-    end if;
-    
     select prize into precioProducto from product
     where product_code = cod_producto;
     
@@ -90,12 +79,8 @@ create or replace package body gestionarComandes is
     EXCEPTION
         when cod_existente then
             dbms_output.put_line('El codigo de la comanda ya existe');
-        when fecha_null then
-            dbms_output.put_line('La fecha de la comanda no puede ser nula');
         when cod_null then
             dbms_output.put_line('El codigo de la comanda no puede ser nulo');
-        when cantidad_invalida then
-            dbms_output.put_line('La cantidad no puede ser 0 o negativo');
         when vendedor_no_existe then
             dbms_output.put_line('El vendedor no existe');
         when cliente_no_existe then
