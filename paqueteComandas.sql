@@ -95,7 +95,7 @@ create or replace package body gestionarComandes is
             dbms_output.put_line('El caracter para dar de alta una comanda es N,que indica que no ha estado dado de baja');
     END alta_comanda;
     --Baja
-    procedure baixacomanda(ocomanda in order2.order_code%type)as
+    procedure baixa_comanda(ocomanda in order2.order_code%type)as
     contador number;
     no_esta exception;
     begin
@@ -197,16 +197,21 @@ create or replace package body gestionarComandes is
     --3--
     PROCEDURE CONSULTA_COMANDA_DATA (FECHA DATE)
     AS
-    
+    cont_com number;
     CURSOR COMANDA IS
     SELECT * FROM ORDER2
     WHERE FECHA = ORDER_DATE;
     
     BEGIN
-        FOR I IN COMANDA LOOP
-            DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
-        END LOOP;
-    
+        select count(*) into cont_com from order2
+        where order_date = fecha;
+        if cont_com != 0 then
+            FOR I IN COMANDA LOOP
+                DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
+            END LOOP;
+        else
+             DBMS_OUTPUT.PUT_LINE('No hay comandas con esta fecha');
+        end if;
     END;
     
     
@@ -216,14 +221,21 @@ create or replace package body gestionarComandes is
     PROCEDURE CONSULTA_COMANDES_CLIENT (CODIGO_CLIENTE ORDER2.CUSTOMER_CODE%TYPE)
     AS
     
+    cont_com number;
     CURSOR COMANDA IS
     SELECT * FROM ORDER2
     WHERE CODIGO_CLIENTE = CUSTOMER_CODE;
     
     BEGIN
-        FOR I IN COMANDA LOOP
-            DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
-        END LOOP;
+        select count(*) into cont_com from order2
+        where customer_code = CODIGO_CLIENTE;
+        if cont_com != 0 then
+            FOR I IN COMANDA LOOP
+                DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
+            END LOOP;
+        else
+             DBMS_OUTPUT.PUT_LINE('No hay comandas de este cliente');
+        end if;
     END;
     
     
@@ -232,14 +244,21 @@ create or replace package body gestionarComandes is
     PROCEDURE CONSULTA_COMANDES_VENEDOR (CODIGO_VENDEDOR ORDER2.SUPPLIER_CODE%TYPE)
     AS
     
+    cont_com number;
     CURSOR COMANDA IS
     SELECT * FROM ORDER2
     WHERE CODIGO_VENDEDOR = SUPPLIER_CODE;
     
     BEGIN
-        FOR I IN COMANDA LOOP
-            DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
-        END LOOP;
+        select count(*) into cont_com from order2
+        where supplier_code = CODIGO_VENDEDOR;
+        if cont_com != 0 then
+            FOR I IN COMANDA LOOP
+                DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
+            END LOOP;
+        else
+             DBMS_OUTPUT.PUT_LINE('No hay comandas de este vendedor');
+        end if;
     END;
     
     
@@ -249,14 +268,21 @@ create or replace package body gestionarComandes is
     PROCEDURE CONSULTA_COMANDES_PRODUCTE (CODIGO_PRODUCTO ORDER2.PRODUCT_CODE%TYPE)
     AS
     
+    cont_com number;
     CURSOR COMANDA IS
     SELECT * FROM ORDER2
     WHERE CODIGO_PRODUCTO = PRODUCT_CODE;
     
     BEGIN
-        FOR I IN COMANDA LOOP
-            DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
-        END LOOP;
+        select count(*) into cont_com from order2
+        where product_code = CODIGO_PRODUCTO;
+        if cont_com != 0 then
+            FOR I IN COMANDA LOOP
+                DBMS_OUTPUT.PUT_LINE('CODIGO COMANDA: '||I.ORDER_CODE||' FECHA COMANDA: '||I.ORDER_DATE||' CODIGO CLIENTE: '||I.CUSTOMER_CODE||' CODIGO VENDEDOR: '||I.SUPPLIER_CODE||' CODIGO PRODUCTO: '||I.PRODUCT_CODE||' CATNTIDAD: '||I.QUANTITY||' CANTIDAD TOTAL: '||I.TOTAL_AMOUNT|| ' ELIMINACION COMANDA: '||I.ORDER_DROP);
+            END LOOP;
+        else
+             DBMS_OUTPUT.PUT_LINE('No hay comandas de este producto');
+        end if;
     END;
 
 end gestionarComandes;
