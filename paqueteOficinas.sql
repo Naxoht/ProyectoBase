@@ -123,13 +123,16 @@ create or replace package body gestion_oficines is
     AS
     
     OFFI OFFICE%ROWTYPE;
-    
+
     BEGIN
     
     SELECT * INTO OFFI FROM OFFICE O
     WHERE CODI = O.CODE_OFFICE;
     
-    DBMS_OUTPUT.PUT_LINE('CODIGO OFICINA: '||OFFI.CODE_OFFICE||' CIUDAD: '||OFFI.CITY||' PROVINCIA: '||OFFI.PROVINCE||' OBJETIVO OFFICINA: '||OFFI.OFFICE_OBJECTIVE||' VENTAS OFICINA: '||OFFI.OFFICE_SALES||' DIRECTOR: '||OFFI.OFFICE_DIRECTOR);
+    DBMS_OUTPUT.PUT_LINE('CODIGO OFICINA: '||OFFI.CODE_OFFICE||' CIUDAD: '||OFFI.CITY||' PROVINCIA: '||OFFI.PROVINCE||' OBJETIVO OFICINA: '||OFFI.OFFICE_OBJECTIVE||' VENTAS OFICINA: '||OFFI.OFFICE_SALES||' DIRECTOR: '||OFFI.OFFICE_DIRECTOR);
+    EXCEPTION    
+        when  no_data_found then
+            dbms_output.put_line('No existe una oficina con ese codigo');
     END consulta_oficina_codi;
 
     --2--
