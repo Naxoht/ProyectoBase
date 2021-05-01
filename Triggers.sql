@@ -51,6 +51,9 @@ begin
         if :new.ORDER_DATE is null then
             :new.ORDER_DATE := sysdate;
         end if;
+        if :new.QUANTITY <0 then
+            RAISE_APPLICATION_ERROR(-20003, 'La quantitat no pot ser negativa.');
+        end if;
 
     end if;
 
