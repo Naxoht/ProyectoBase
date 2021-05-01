@@ -22,7 +22,7 @@ create or replace package body gestionarComandes is
     cod_existente exception;
     cliente_no_existe exception;
     producto_no_existe exception;
-    
+    caracter_incorrecto exception;
     cod_null exception;
         
     cont_comanda number;
@@ -69,6 +69,10 @@ create or replace package body gestionarComandes is
         raise producto_no_existe;
     end if;
     
+    if salida_comanda !='N' then
+        raise caracter_incorrecto;
+    end if;
+    
     select prize into precioProducto from product
     where product_code = cod_producto;
     
@@ -87,6 +91,8 @@ create or replace package body gestionarComandes is
             dbms_output.put_line('El cliente no existe');
         when producto_no_existe then
             dbms_output.put_line('El producto no existe');
+        when caracter_incorrecto then
+            dbms_output.put_line('El caracter para dar de alta una comanda es N,que indica que no ha estado dado de baja');
     END alta_comanda;
     --Baja
     procedure baixacomanda(ocomanda in order2.order_code%type)as
