@@ -84,6 +84,8 @@ create or replace package body gestion_oficines is
         direct office.office_director%TYPE;
         error_contador exception;
         error_opcion exception;
+        cont_dir number;
+        dir_no_existe exception;
     begin
         --Primero comprobamos que exista en codigo
         select count(code_office) INTO comprobacion_cod from office where code_office = cod_oficce;
@@ -103,6 +105,11 @@ create or replace package body gestion_oficines is
                     update office set office_sales = modificacion where code_office =  cod_oficce;
                 elsif option_ = 3 then
                     direct := modificacion; 
+                    select count(supplier_code) into cont_dir from supplier
+                    where supplier_code = direct;
+                    if cont_dir = 0 then
+                        raise dir_no_existe;
+                    end if;
                     update office set office_director = modificacion where code_office =  cod_oficce;
                 end if;
     
@@ -114,6 +121,8 @@ create or replace package body gestion_oficines is
             dbms_output.put_line('El codigo que has puesto  no existe');
         when error_opcion then
             dbms_output.put_line('La opcion que has puesto no existe');
+        when dir_no_existe then
+            dbms_output.put_line('No existe un director con ese codigo');
             
     end modificacio_oficina;
     
@@ -182,14 +191,16 @@ create or replace package body gestion_oficines is
     DIRECT_CONT NUMBER;
     
     BEGIN
-    DBMS_OUTPUT.PUT_LINE('OFICINA      DIRECTOR');
     SELECT COUNT(OFFICE_DIRECTOR)INTO DIRECT_CONT FROM OFFICE O
     WHERE O.OFFICE_DIRECTOR = DIRECTOR;
-    FOR I IN EX4 LOOP
-        IF  DIRECT_CONT > 0 THEN
+    IF  DIRECT_CONT != 0 THEN
+        DBMS_OUTPUT.PUT_LINE('OFICINA      DIRECTOR');
+        FOR I IN EX4 LOOP
             DBMS_OUTPUT.PUT_LINE(I.CODE_OFFICE||'        '||I.OFFICE_DIRECTOR);
-        END IF;    
-    END LOOP;
+        END LOOP;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('NO EXISTEN OFICINAS CON ESE DIRECTOR');
+    END IF;  
     END CONSULTA_OFICINES_CAP;
     
     
