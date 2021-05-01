@@ -1,5 +1,5 @@
 
---=====TRIGERS=====--
+--=====TRIGGERS=====--
 
 
 --Trigger oficina--
