@@ -25,10 +25,10 @@ create or replace package body gestionarComandes is
     
     cod_null exception;
         
-    cont_comanda number(8);
-    cont_cliente number(8);
-    cont_vendedor number(8);
-    cont_producto number(8);
+    cont_comanda number;
+    cont_cliente number;
+    cont_vendedor number;
+    cont_producto number;
     precioProducto number(10,2);
     precioTotal number(10,2);
     
