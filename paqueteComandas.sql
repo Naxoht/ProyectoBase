@@ -93,6 +93,8 @@ create or replace package body gestionarComandes is
             dbms_output.put_line('El producto no existe');
         when caracter_incorrecto then
             dbms_output.put_line('El caracter para dar de alta una comanda es N,que indica que no ha estado dado de baja');
+        when others then
+            dbms_output.put_line('Error inesperado');
     END alta_comanda;
     --Baja
     procedure baixa_comanda(ocomanda in order2.order_code%type)as
